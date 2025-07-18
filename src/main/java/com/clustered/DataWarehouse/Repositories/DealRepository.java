@@ -1,3 +1,6 @@
 package com.clustered.DataWarehouse.Repositories;
 
-public interface DealRepository { }
+import com.clustered.DataWarehouse.Models.Deal;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DealRepository extends JpaRepository<Deal, String> { }
