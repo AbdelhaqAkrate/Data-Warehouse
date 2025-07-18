@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ApiResponse {
     private String message;
     private Object data;
-    private ArrayList<String> errors;
+    private Object errors;
 
     public ApiResponse(String message) {
         this.message = message;

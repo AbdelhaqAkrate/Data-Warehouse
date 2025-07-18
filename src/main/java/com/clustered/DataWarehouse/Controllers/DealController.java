@@ -29,7 +29,7 @@ public class DealController {
         var result = dealService.insert(dealListDTO.getDeals());
 
         var succeeded = (ArrayList<?>) result.get("inserted");
-        var failed = (ArrayList<String>) result.get("errors");
+        var failed = (ArrayList<?>) result.get("errors");
 
         ApiResponse response = new ApiResponse("Deals inserted successfully", succeeded, failed.isEmpty() ? null : failed);
         return ResponseEntity.ok(response);

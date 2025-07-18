@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,12 +27,14 @@ public class DealServiceImpl implements DealService {
     public DealDTO create(DealDTO dealDTO) {
         ArrayList<String> validationErrors = new ArrayList<>();
         DealValidation.validate(dealDTO, validationErrors);
-        if (!validationErrors.isEmpty()) {
-            throw new ValidationException("Deal " + dealDTO.getId() + String.join("; ", validationErrors));
-        }
+
 
         if (dealRepository.findById(dealDTO.getId()).isPresent()) {
             throw new AlreadyExistException("Deal " + dealDTO.getId() + " already exists.");
+        }
+
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException(validationErrors);
         }
 
         Deal deal = modelMapper.map(dealDTO, Deal.class);
@@ -41,22 +44,27 @@ public class DealServiceImpl implements DealService {
         return modelMapper.map(saved, DealDTO.class);
     }
 
-
     public Map<String, Object> insert(ArrayList<DealDTO> dealDTOs) {
         ArrayList<DealDTO> inserted = new ArrayList<>();
-        ArrayList<String> errors = new ArrayList<>();
+        ArrayList<Map<String, Object>> errors = new ArrayList<>();
 
         for (DealDTO dealDTO : dealDTOs) {
             ArrayList<String> validationErrors = new ArrayList<>();
             DealValidation.validate(dealDTO, validationErrors);
 
             if (!validationErrors.isEmpty()) {
-                errors.add("Deal " + dealDTO.getId() + String.join("; ", validationErrors));
+                Map<String, Object> errorDetail = new HashMap<>();
+                errorDetail.put("id", dealDTO.getId());
+                errorDetail.put("errors", validationErrors);
+                errors.add(errorDetail);
                 continue;
             }
 
             if (dealRepository.findById(dealDTO.getId()).isPresent()) {
-                errors.add("Deal " + dealDTO.getId() + " already exists.");
+                Map<String, Object> errorDetail = new HashMap<>();
+                errorDetail.put("id", dealDTO.getId());
+                errorDetail.put("errors", List.of("Deal already exists."));
+                errors.add(errorDetail);
                 continue;
             }
 

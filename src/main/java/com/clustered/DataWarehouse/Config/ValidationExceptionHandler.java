@@ -18,6 +18,7 @@ public class ValidationExceptionHandler {
     public Map<String, Object> handleValidationException(ValidationException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
+        response.put("errors", ex.getErrors());
         return response;
     }
 
