@@ -14,7 +14,7 @@
 | :-------- |  :-------------------------------- |
 | ` {id: String ,fromCurrency: String ,"toCurrency": String,amount: Double},`   |  `{message": "Deal inserted successfully","data":{"id": "DEAL254848","fromCurrency": "MAD","toCurrency":"MAD","amount": 123.4},"errors": null}` |
 
-#### Insert multiple deals
+#### Insert deals
 
 ```http
   POST /api/deals/insert
